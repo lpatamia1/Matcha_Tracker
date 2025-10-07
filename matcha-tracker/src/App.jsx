@@ -1,35 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { TrackerProvider } from "./context/TrackerContext";
+import AddEntryForm from "./components/AddEntryForm";
+import CupCard from "./components/CupCard";
+import EnergyChart from "./components/EnergyChart";
+import FloatingLeaves from "./components/FloatingLeaves";
+import { useContext } from "react";
+import { TrackerContext } from "./context/TrackerContext";
+import "./styles/globals.css";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+function Dashboard() {
+  const { entries } = useContext(TrackerContext);
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="flex flex-wrap gap-4 justify-center mt-6">
+      {entries.map((e) => (
+        <CupCard key={e.id} type={e.type} energy={e.energy} />
+      ))}
+    </div>
+  );
 }
 
-export default App
+export default function App() {
+  return (
+    <TrackerProvider>
+      <div className="relative min-h-screen bg-[#f6f3ec] text-[#3b3b3b] flex flex-col items-center py-8 overflow-hidden">
+        <FloatingLeaves />
+        <h1 className="text-4xl font-bold mb-4">🍵 Matcha Tracker</h1>
+        <AddEntryForm />
+        <Dashboard />
+        <EnergyChart />
+      </div>
+    </TrackerProvider>
+  );
+}

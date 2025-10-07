@@ -8,14 +8,27 @@ export const TrackerProvider = ({ children }) => {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const addEntry = (cup) => setEntries([...entries, { ...cup, id: Date.now() }]);
+    const addEntry = (cup) =>
+    setEntries((prev) => [
+        ...prev,
+        {
+        ...cup,
+        id: crypto.randomUUID(), // unique ID
+        date: new Date().toISOString(), // ✅ save a real timestamp
+        },
+    ]);
+
+  const deleteEntry = (id) => {
+    console.log("🗑️ Deleting entry with ID:", id);
+    setEntries((prev) => prev.filter((entry) => entry.id !== id));
+  };
 
   useEffect(() => {
     localStorage.setItem("matchaEntries", JSON.stringify(entries));
   }, [entries]);
 
   return (
-    <TrackerContext.Provider value={{ entries, addEntry }}>
+    <TrackerContext.Provider value={{ entries, addEntry, deleteEntry }}>
       {children}
     </TrackerContext.Provider>
   );

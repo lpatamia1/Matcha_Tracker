@@ -13,9 +13,10 @@ export default function AddEntryForm() {
 
   return (
     <form
-      onSubmit={handleSubmit}
-      className="flex flex-col sm:flex-row gap-3 p-4 bg-[#f6f3ec] rounded-xl shadow-md border border-[#b8d8a9]"
-    >
+        onSubmit={handleSubmit}
+        className="flex flex-col sm:flex-row gap-3 p-4 bg-[#f6f3ec] rounded-xl shadow-md border border-[#b8d8a9] w-full max-w-md mx-auto"
+        >
+
       <select
         value={type}
         onChange={(e) => setType(e.target.value)}
